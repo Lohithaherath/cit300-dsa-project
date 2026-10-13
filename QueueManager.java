@@ -1,9 +1,6 @@
 public class QueueManager {
     private int[] queue;
-    private int front;
-    private int rear;
-    private int capacity;
-    private int count;
+    private int front, rear, capacity, count;
 
     public QueueManager(int capacity) {
         this.capacity = capacity;
@@ -21,12 +18,12 @@ public class QueueManager {
         rear = (rear + 1) % capacity;
         queue[rear] = value;
         count++;
-        System.out.println("Enqueued " + value + " to queue.");
+        System.out.println("Enqueued " + value + " to Queue.");
     }
 
     public void dequeue() {
         if (isEmpty()) {
-            System.out.println("Queue Underflow Error: Cannot dequeue from an empty queue.");
+            System.out.println("Queue Underflow Error: Cannot dequeue from empty queue.");
             return;
         }
         System.out.println("Dequeued element: " + queue[front]);
@@ -36,10 +33,10 @@ public class QueueManager {
 
     public void peek() {
         if (isEmpty()) {
-            System.out.println("Queue is empty. No front element.");
+            System.out.println("Queue is empty.");
             return;
         }
-        System.out.println("Front element is: " + queue[front]);
+        System.out.println("Front element: " + queue[front]);
     }
 
     public boolean isEmpty() {
@@ -53,8 +50,7 @@ public class QueueManager {
         }
         System.out.print("Queue (Front to Rear): [ ");
         for (int i = 0; i < count; i++) {
-            int index = (front + i) % capacity;
-            System.out.print(queue[index] + " ");
+            System.out.print(queue[(front + i) % capacity] + " ");
         }
         System.out.println("]");
     }

@@ -11,11 +11,11 @@ public class ArrayManager {
 
     public void insert(int value) {
         if (size >= capacity) {
-            System.out.println("Error: Array is full! Cannot insert " + value);
+            System.out.println("Error: Array Overflow! Cannot insert " + value);
             return;
         }
         array[size++] = value;
-        System.out.println("Successfully inserted: " + value);
+        System.out.println("Inserted " + value + " into Array.");
     }
 
     public void delete(int value) {
@@ -27,14 +27,14 @@ public class ArrayManager {
             }
         }
         if (index == -1) {
-            System.out.println("Element " + value + " not found in array.");
+            System.out.println("Element " + value + " not found in Array.");
             return;
         }
         for (int i = index; i < size - 1; i++) {
             array[i] = array[i + 1];
         }
         size--;
-        System.out.println("Successfully deleted: " + value);
+        System.out.println("Deleted " + value + " from Array.");
     }
 
     public void search(int value) {
@@ -44,7 +44,7 @@ public class ArrayManager {
                 return;
             }
         }
-        System.out.println("Element " + value + " not found in array.");
+        System.out.println("Element " + value + " not found in Array.");
     }
 
     public void display() {
@@ -57,5 +57,11 @@ public class ArrayManager {
             System.out.print(array[i] + " ");
         }
         System.out.println("]");
+    }
+
+    public int[] getRawArray() {
+        int[] current = new int[size];
+        System.arraycopy(array, 0, current, 0, size);
+        return current;
     }
 }

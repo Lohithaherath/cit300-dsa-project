@@ -1,31 +1,23 @@
 import java.util.*;
 
 public class GraphManager {
-    private Map<Integer, List<Integer>> adjList;
-
-    public GraphManager() {
-        adjList = new HashMap<>();
-    }
+    private Map<Integer, List<Integer>> adjList = new HashMap<>();
 
     public void addVertex(int vertex) {
-        if (adjList.containsKey(vertex)) {
+        if (!adjList.containsKey(vertex)) {
+            adjList.put(vertex, new LinkedList<>());
+            System.out.println("Added Vertex: " + vertex);
+        } else {
             System.out.println("Vertex " + vertex + " already exists.");
-            return;
         }
-        adjList.put(vertex, new LinkedList<>());
-        System.out.println("Added vertex: " + vertex);
     }
 
-    public void addEdge(int source, int destination) {
-        if (!adjList.containsKey(source)) {
-            addVertex(source);
-        }
-        if (!adjList.containsKey(destination)) {
-            addVertex(destination);
-        }
-        adjList.get(source).add(destination);
-        adjList.get(destination).add(source); // Undirected Graph
-        System.out.println("Added edge between " + source + " and " + destination);
+    public void addEdge(int u, int v) {
+        addVertex(u);
+        addVertex(v);
+        adjList.get(u).add(v);
+        adjList.get(v).add(u);
+        System.out.println("Added Edge between " + u + " and " + v);
     }
 
     public void displayGraph() {
@@ -33,59 +25,54 @@ public class GraphManager {
             System.out.println("Graph is empty.");
             return;
         }
-        System.out.println("\n--- Graph Representation (Adjacency List) ---");
+        System.out.println("\n--- Adjacency List ---");
         for (var entry : adjList.entrySet()) {
             System.out.println("Vertex " + entry.getKey() + " -> " + entry.getValue());
         }
     }
 
-    public void bfs(int startVertex) {
-        if (!adjList.containsKey(startVertex)) {
-            System.out.println("Start vertex " + startVertex + " does not exist.");
-            return;
-        }
-
+    public String bfs(int startVertex, int[] stepCounter) {
+        if (!adjList.containsKey(startVertex)) return "Invalid Start Vertex";
         Set<Integer> visited = new HashSet<>();
         Queue<Integer> queue = new LinkedList<>();
+        StringBuilder result = new StringBuilder();
 
         visited.add(startVertex);
         queue.add(startVertex);
 
-        System.out.print("BFS Traversal starting from vertex " + startVertex + ": ");
-
         while (!queue.isEmpty()) {
             int current = queue.poll();
-            System.out.print(current + " ");
+            stepCounter[0]++;
+            result.append(current).append(" ");
 
             for (int neighbor : adjList.get(current)) {
+                stepCounter[0]++;
                 if (!visited.contains(neighbor)) {
                     visited.add(neighbor);
                     queue.add(neighbor);
                 }
             }
         }
-        System.out.println();
+        return result.toString();
     }
 
-    public void dfs(int startVertex) {
-        if (!adjList.containsKey(startVertex)) {
-            System.out.println("Start vertex " + startVertex + " does not exist.");
-            return;
-        }
-
+    public String dfs(int startVertex, int[] stepCounter) {
+        if (!adjList.containsKey(startVertex)) return "Invalid Start Vertex";
         Set<Integer> visited = new HashSet<>();
-        System.out.print("DFS Traversal starting from vertex " + startVertex + ": ");
-        dfsHelper(startVertex, visited);
-        System.out.println();
+        StringBuilder result = new StringBuilder();
+        dfsHelper(startVertex, visited, result, stepCounter);
+        return result.toString();
     }
 
-    private void dfsHelper(int vertex, Set<Integer> visited) {
+    private void dfsHelper(int vertex, Set<Integer> visited, StringBuilder result, int[] stepCounter) {
         visited.add(vertex);
-        System.out.print(vertex + " ");
+        stepCounter[0]++;
+        result.append(vertex).append(" ");
 
         for (int neighbor : adjList.get(vertex)) {
+            stepCounter[0]++;
             if (!visited.contains(neighbor)) {
-                dfsHelper(neighbor, visited);
+                dfsHelper(neighbor, visited, result, stepCounter);
             }
         }
     }

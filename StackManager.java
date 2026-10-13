@@ -15,12 +15,12 @@ public class StackManager {
             return;
         }
         stack[++top] = value;
-        System.out.println("Pushed " + value + " to stack.");
+        System.out.println("Pushed " + value + " to Stack.");
     }
 
     public void pop() {
         if (isEmpty()) {
-            System.out.println("Stack Underflow Error: Cannot pop from an empty stack.");
+            System.out.println("Stack Underflow Error: Cannot pop from empty stack.");
             return;
         }
         System.out.println("Popped element: " + stack[top--]);
@@ -28,10 +28,10 @@ public class StackManager {
 
     public void peek() {
         if (isEmpty()) {
-            System.out.println("Stack is empty. No top element.");
+            System.out.println("Stack is empty.");
             return;
         }
-        System.out.println("Top element is: " + stack[top]);
+        System.out.println("Top element: " + stack[top]);
     }
 
     public boolean isEmpty() {

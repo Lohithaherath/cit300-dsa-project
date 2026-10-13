@@ -4,174 +4,126 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println("==================================================");
-        System.out.println("  CIT300 Data Structures & Graph Performance Analyzer");
-        System.out.println("==================================================");
-
         ArrayManager arrayMgr = new ArrayManager(10);
-        LinkedListManager listMgr = new LinkedListManager();
         StackManager stackMgr = new StackManager(5);
         QueueManager queueMgr = new QueueManager(5);
+        LinkedListManager listMgr = new LinkedListManager();
         GraphManager graphMgr = new GraphManager();
 
-        boolean running = true;
-        while (running) {
-            System.out.println("\n--- MAIN MENU ---");
+        // Sample Graph Data
+        graphMgr.addEdge(1, 2);
+        graphMgr.addEdge(1, 3);
+        graphMgr.addEdge(2, 4);
+
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("==================================================");
+            System.out.println("          DATA STRUCTURE & GRAPH ANALYZER         ");
+            System.out.println("==================================================");
             System.out.println("1. Array Operations");
             System.out.println("2. Stack Operations");
             System.out.println("3. Queue Operations");
             System.out.println("4. Linked List Operations");
-            System.out.println("5. Searching Performance Comparison");
-            System.out.println("6. Graph Operations (BFS / DFS)");
-            System.out.println("7. Exit System");
-            System.out.print("Select an option (1-7): ");
+            System.out.println("5. Searching Operations");
+            System.out.println("6. Graph Operations");
+            System.out.println("7. Performance Comparison");
+            System.out.println("8. Display All Results");
+            System.out.println("9. Exit");
+            System.out.print("Enter your choice: ");
 
-            int choice = getValidIntInput();
-
+            int choice = getIntInput();
             switch (choice) {
-                case 1:
-                    handleArrayMenu(arrayMgr);
+                case 1: handleArray(arrayMgr); break;
+                case 2: handleStack(stackMgr); break;
+                case 3: handleQueue(queueMgr); break;
+                case 4: handleLinkedList(listMgr); break;
+                case 5: handleSearching(arrayMgr); break;
+                case 6: handleGraph(graphMgr); break;
+                case 7: 
+                    System.out.print("Enter search target value for benchmark: ");
+                    int target = getIntInput();
+                    PerformanceAnalyzer.runComparison(arrayMgr.getRawArray(), target, graphMgr, 1);
                     break;
-                case 2:
-                    handleStackMenu(stackMgr);
+                case 8:
+                    System.out.println("\n--- ALL STRUCTURES DISPLAY ---");
+                    arrayMgr.display();
+                    stackMgr.display();
+                    queueMgr.display();
+                    listMgr.display();
+                    graphMgr.displayGraph();
                     break;
-                case 3:
-                    handleQueueMenu(queueMgr);
-                    break;
-                case 4:
-                    handleLinkedListMenu(listMgr);
-                    break;
-                case 5:
-                    handleSearchMenu();
-                    break;
-                case 6:
-                    handleGraphMenu(graphMgr);
-                    break;
-                case 7:
-                    System.out.println("Exiting System. Thank you!");
-                    running = false;
+                case 9:
+                    System.out.println("Exiting System. Good Luck!");
+                    exit = true;
                     break;
                 default:
-                    System.out.println("Invalid choice! Please select between 1 and 7.");
+                    System.out.println("Invalid selection!");
             }
         }
-        scanner.close();
     }
 
-    private static int getValidIntInput() {
+    private static int getIntInput() {
         while (!scanner.hasNextInt()) {
-            System.out.print("Invalid input! Please enter a valid integer: ");
+            System.out.print("Enter a valid integer: ");
             scanner.next();
         }
         return scanner.nextInt();
     }
 
-    private static void handleArrayMenu(ArrayManager mgr) {
-        System.out.println("\n--- Array Operations ---");
-        System.out.println("1. Insert | 2. Delete | 3. Search | 4. Display");
-        System.out.print("Choice: ");
-        int choice = getValidIntInput();
-        if (choice == 1) {
-            System.out.print("Enter integer to insert: ");
-            mgr.insert(getValidIntInput());
-        } else if (choice == 2) {
-            System.out.print("Enter integer to delete: ");
-            mgr.delete(getValidIntInput());
-        } else if (choice == 3) {
-            System.out.print("Enter integer to search: ");
-            mgr.search(getValidIntInput());
-        } else if (choice == 4) {
-            mgr.display();
-        }
+    private static void handleArray(ArrayManager mgr) {
+        System.out.println("\n--- ARRAY OPERATIONS ---");
+        System.out.println("1. Insert | 2. Delete | 3. Search | 4. Display | 5. Back");
+        int c = getIntInput();
+        if (c == 1) { System.out.print("Val: "); mgr.insert(getIntInput()); }
+        else if (c == 2) { System.out.print("Val: "); mgr.delete(getIntInput()); }
+        else if (c == 3) { System.out.print("Val: "); mgr.search(getIntInput()); }
+        else if (c == 4) mgr.display();
     }
 
-    private static void handleStackMenu(StackManager mgr) {
-        System.out.println("\n--- Stack Operations ---");
-        System.out.println("1. Push | 2. Pop | 3. Peek | 4. Display");
-        System.out.print("Choice: ");
-        int choice = getValidIntInput();
-        if (choice == 1) {
-            System.out.print("Enter integer to push: ");
-            mgr.push(getValidIntInput());
-        } else if (choice == 2) {
-            mgr.pop();
-        } else if (choice == 3) {
-            mgr.peek();
-        } else if (choice == 4) {
-            mgr.display();
-        }
+    private static void handleStack(StackManager mgr) {
+        System.out.println("\n--- STACK OPERATIONS ---");
+        System.out.println("1. Push | 2. Pop | 3. Peek | 4. Display | 5. Back");
+        int c = getIntInput();
+        if (c == 1) { System.out.print("Val: "); mgr.push(getIntInput()); }
+        else if (c == 2) mgr.pop();
+        else if (c == 3) mgr.peek();
+        else if (c == 4) mgr.display();
     }
 
-    private static void handleQueueMenu(QueueManager mgr) {
-        System.out.println("\n--- Queue Operations ---");
-        System.out.println("1. Enqueue | 2. Dequeue | 3. Peek | 4. Display");
-        System.out.print("Choice: ");
-        int choice = getValidIntInput();
-        if (choice == 1) {
-            System.out.print("Enter integer to enqueue: ");
-            mgr.enqueue(getValidIntInput());
-        } else if (choice == 2) {
-            mgr.dequeue();
-        } else if (choice == 3) {
-            mgr.peek();
-        } else if (choice == 4) {
-            mgr.display();
-        }
+    private static void handleQueue(QueueManager mgr) {
+        System.out.println("\n--- QUEUE OPERATIONS ---");
+        System.out.println("1. Enqueue | 2. Dequeue | 3. Peek | 4. Display | 5. Back");
+        int c = getIntInput();
+        if (c == 1) { System.out.print("Val: "); mgr.enqueue(getIntInput()); }
+        else if (c == 2) mgr.dequeue();
+        else if (c == 3) mgr.peek();
+        else if (c == 4) mgr.display();
     }
 
-    private static void handleLinkedListMenu(LinkedListManager mgr) {
-        System.out.println("\n--- Linked List Operations ---");
-        System.out.println("1. Insert | 2. Delete | 3. Search | 4. Display");
-        System.out.print("Choice: ");
-        int choice = getValidIntInput();
-        if (choice == 1) {
-            System.out.print("Enter integer to insert: ");
-            mgr.insert(getValidIntInput());
-        } else if (choice == 2) {
-            System.out.print("Enter integer to delete: ");
-            mgr.delete(getValidIntInput());
-        } else if (choice == 3) {
-            System.out.print("Enter integer to search: ");
-            mgr.search(getValidIntInput());
-        } else if (choice == 4) {
-            mgr.display();
-        }
+    private static void handleLinkedList(LinkedListManager mgr) {
+        System.out.println("\n--- LINKED LIST OPERATIONS ---");
+        System.out.println("1. Insert | 2. Delete | 3. Search | 4. Display | 5. Back");
+        int c = getIntInput();
+        if (c == 1) { System.out.print("Val: "); mgr.insert(getIntInput()); }
+        else if (c == 2) { System.out.print("Val: "); mgr.delete(getIntInput()); }
+        else if (c == 3) { System.out.print("Val: "); mgr.search(getIntInput()); }
+        else if (c == 4) mgr.display();
     }
 
-    private static void handleSearchMenu() {
-        System.out.print("Enter size of dataset to benchmark (e.g., 1000): ");
-        int size = getValidIntInput();
-        int[] dataset = new int[size];
-        for (int i = 0; i < size; i++) {
-            dataset[i] = (int) (Math.random() * 10000);
-        }
-        System.out.print("Enter target value to search: ");
-        int target = getValidIntInput();
-        SearchManager.comparePerformance(dataset, target);
+    private static void handleSearching(ArrayManager mgr) {
+        System.out.print("Enter target to search in current Array: ");
+        int target = getIntInput();
+        mgr.search(target);
     }
 
-    private static void handleGraphMenu(GraphManager mgr) {
-        System.out.println("\n--- Graph Operations ---");
-        System.out.println("1. Add Vertex | 2. Add Edge | 3. Display Graph | 4. BFS Traversal | 5. DFS Traversal");
-        System.out.print("Choice: ");
-        int choice = getValidIntInput();
-        if (choice == 1) {
-            System.out.print("Enter vertex ID: ");
-            mgr.addVertex(getValidIntInput());
-        } else if (choice == 2) {
-            System.out.print("Enter Source Vertex ID: ");
-            int u = getValidIntInput();
-            System.out.print("Enter Destination Vertex ID: ");
-            int v = getValidIntInput();
-            mgr.addEdge(u, v);
-        } else if (choice == 3) {
-            mgr.displayGraph();
-        } else if (choice == 4) {
-            System.out.print("Enter start vertex for BFS: ");
-            mgr.bfs(getValidIntInput());
-        } else if (choice == 5) {
-            System.out.print("Enter start vertex for DFS: ");
-            mgr.dfs(getValidIntInput());
-        }
+    private static void handleGraph(GraphManager mgr) {
+        System.out.println("\n--- GRAPH OPERATIONS ---");
+        System.out.println("1. Add Vertex | 2. Add Edge | 3. Display Graph | 4. BFS Traversal | 5. DFS Traversal | 6. Back");
+        int c = getIntInput();
+        if (c == 1) { System.out.print("Vertex ID: "); mgr.addVertex(getIntInput()); }
+        else if (c == 2) { System.out.print("Src: "); int u = getIntInput(); System.out.print("Dest: "); mgr.addEdge(u, getIntInput()); }
+        else if (c == 3) mgr.displayGraph();
+        else if (c == 4) { System.out.print("Start: "); System.out.println("BFS: " + mgr.bfs(getIntInput(), new int[]{0})); }
+        else if (c == 5) { System.out.print("Start: "); System.out.println("DFS: " + mgr.dfs(getIntInput(), new int[]{0})); }
     }
 }
